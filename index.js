@@ -4,7 +4,8 @@ $(document).ready(() => {
   loadRecipes();
   loadSpecials();
 
-  // $("#add-recipe-button").submit(saveRecipe);
+  $("#add-recipe-button").click(saveRecipe);
+  $("#add-special-button").click(saveSpecial);
 });
 
 function loadRecipes() {
@@ -38,7 +39,11 @@ function recipesToHTML(recipes) {
     const recipeElement = `
         <div class="recipe-container">
             <div class="overlay"></div>
-            <img src=".${r.images ? r.images.full : "/img/no-image.jpg"}" />
+            <img src=".${
+              r.images && Object.keys(r.images).length
+                ? r.images.full
+                : "/img/no-image.jpg"
+            }" />
             <h2 class="recipe-name">${r.title}</h2>
             <button id="recipe-${index}">get recipe</button>
         </div>`;
@@ -52,6 +57,47 @@ function recipesToHTML(recipes) {
 
   hoverRecipe();
 }
+
+$("#add-ingredient-button").click(function () {
+  const ingredientsCount = $("#ingredientInputContainer input").length / 3;
+
+  const addNewIngredient = `
+    <div class="input-container">
+      <h3>Ingredient Name</h3>
+      <input type="text" id="ingredient-name-${ingredientsCount + 1}" />
+    </div>
+    <div class="row-1-details">
+      <div>
+        <h3>Amount</h3>
+        <input type="number" id="ingredient-amount-${ingredientsCount + 1}" />
+      </div>
+      <div>
+        <h3>Measurement</h3>
+        <input type="text" id="ingredient-measurement-${
+          ingredientsCount + 1
+        }" />
+      </div>
+    </div>`;
+
+  $("#ingredientInputContainer").append(addNewIngredient);
+});
+
+$("#add-direction-button").click(function () {
+  const directionCount = $("#directionInputContainer input").length / 2;
+
+  const addNewDirection = `
+    <div class="input-container">
+      <h3>Instructions</h3>
+      <input type="text" id="direction-name-${directionCount + 1}" />
+    </div>
+    <div class="input-container">
+      <h3>Optional</h3>
+      <input type="checkbox" id="direction-optional-${directionCount + 1}" />
+    </div>  
+  `;
+
+  $("#directionInputContainer").append(addNewDirection);
+});
 
 function hoverRecipe() {
   $(".recipe-container").hover(function () {
@@ -67,8 +113,13 @@ function onClickRecipe(r) {
   $("#recipeDesc").text(r.description);
   $(".details-title-container img").attr(
     "src",
-    `.${r.images ? r.images.full : "/img/no-image.jpg"}`
+    `.${
+      r.images && Object.keys(r.images).length
+        ? r.images.full
+        : "/img/no-image.jpg"
+    }`
   );
+
   $("#d-postDate").text(r.postDate);
   $("#d-editDate").text(r.editDate);
   $("#d-servings").text(r.servings);
@@ -106,11 +157,46 @@ function onClickRecipe(r) {
 }
 
 function generateUUID() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+  return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+}
+
+function saveSpecial(e) {
+  e.preventDefault();
+
+  if (!$("#special-title").val()) {
+    return;
+  }
+
+  $.ajax({
+    url: "http://localhost:3001/specials",
+    method: "post",
+    contentType: "application/json",
+    data: JSON.stringify({
+      uuid: generateUUID(),
+      ingredientId: generateUUID(),
+      type: $("#special-type").val(),
+      title: $("#special-title").val(),
+      text: $("#special-text").val(),
+    }),
+    success: function (response) {
+      console.log(response);
+      loadRecipes();
+    },
+    error: function (response) {
+      console.log("Error in api request", response);
+    },
+  });
+
+  $("#special-title").val("");
+  $("#special-type").val("");
+  $("#special-text").val("");
+
+  $(".page-overlay").hide();
+  $(".add-window-container").hide();
 }
 
 function saveRecipe(e) {
@@ -120,17 +206,37 @@ function saveRecipe(e) {
     return;
   }
 
-  console.log("test");
-  $("#ingredientInputContainer input").each(function (el) {
-    console.log(el);
-  });
+  const ingredientsCount = $("#ingredientInputContainer input").length / 3;
 
-  return;
+  const ingredientsToAdd = [];
+  for (let i = 0; i < ingredientsCount; i++) {
+    const ingredientToAdd = {
+      uuid: generateUUID(),
+      amount: parseFloat($(`#ingredient-amount-${i + 1}`).val()),
+      measurement: $(`#ingredient-measurement-${i + 1}`).val(),
+      name: $(`#ingredient-name-${i + 1}`).val(),
+    };
+
+    ingredientsToAdd.push(ingredientToAdd);
+  }
+
+  const directionsCount = $("#directionInputContainer input").length / 2;
+
+  const directionsToAdd = [];
+  for (let i = 0; i < directionsCount; i++) {
+    const directionToAdd = {
+      instructions: $(`#direction-name-${i + 1}`).val(),
+      optional: $(`#direction-optional-${i + 1}`).prop("checked"),
+    };
+
+    directionsToAdd.push(directionToAdd);
+  }
 
   $.ajax({
     url: "http://localhost:3001/recipes",
     method: "post",
-    data: {
+    contentType: "application/json",
+    data: JSON.stringify({
       uuid: generateUUID(),
       title: $("#recipe-title").val(),
       description: $("#recipe-description").val(),
@@ -140,9 +246,9 @@ function saveRecipe(e) {
       cookTime: parseInt($("#recipe-cooktime").val()),
       postDate: $("#recipe-postdate").val(),
       editDate: $("#recipe-editdate").val(),
-      ingredients: [],
-      directions: [],
-    },
+      ingredients: ingredientsToAdd,
+      directions: directionsToAdd,
+    }),
     success: function (response) {
       console.log(response);
       loadRecipes();
