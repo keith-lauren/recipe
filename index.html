@@ -61,8 +61,8 @@
     </div>
 
     <div class="addupdate-container">
-      <button id="add-update-recipe">add/update recipe</button>
-      <button>add/update special</button>
+      <button id="add-recipe">add recipe</button>
+      <button id="add-special">add special</button>
     </div>
 
     <form id="addRecipeId" class="add-window-container">
@@ -99,52 +99,72 @@
           <input type="text" id="recipe-editdate" />
         </div>
       </div>
+
       <h3 class="ingredient-header">Ingredients</h3>
       <div id="ingredientInputContainer" class="recipe-ingredient-container">
+        <div class="input-container">
+          <h3>Ingredient Name</h3>
+          <input type="text" id="ingredient-name-1" />
+        </div>
         <div class="row-1-details">
           <div>
             <h3>Amount</h3>
-            <input type="number" id="recipe-ingredient-amount" />
+            <input type="number" id="ingredient-amount-1" />
           </div>
           <div>
             <h3>Measurement</h3>
-            <input type="text" id="recipe-ingredient-measurement" />
+            <input type="text" id="ingredient-measurement-1" />
           </div>
         </div>
-        <div class="input-container">
-          <h3>Ingredient Name</h3>
-          <input type="text" id="recipe-ingredient-name" />
-        </div>
       </div>
-      <button id="add-ingredient-button">+</button>
+      <button type="button" id="add-ingredient-button">+</button>
+
       <h3 class="ingredient-header">Directions</h3>
-      <div class="recipe-ingredient-container">
-        <div class="row-1-details">
-          <div>
-            <h3>Amount</h3>
-            <input type="number" id="recipe-ingredient-amount" />
-          </div>
-          <div>
-            <h3>Measurement</h3>
-            <input type="text" id="recipe-ingredient-measurement" />
-          </div>
+      <div id="directionInputContainer" class="recipe-ingredient-container">
+        <div class="input-container">
+          <h3>Instructions</h3>
+          <input type="text" id="direction-name-1" />
         </div>
         <div class="input-container">
-          <h3>Ingredient Name</h3>
-          <input type="text" id="recipe-ingredient-name" />
+          <h3>Optional</h3>
+          <input type="checkbox" id="direction-optional-1" />
         </div>
       </div>
-      <button id="add-direction-button">+</button>
+      <button type="button" id="add-direction-button">+</button>
+
       <br />
-      <button type="submit" id="add-recipe-button" style="margin-top: 50px">
+      <button type="button" id="add-recipe-button" style="margin-top: 50px">
+        save
+      </button>
+    </form>
+
+    <form id="addSpecialId" class="add-window-container">
+      <h2>Add a Special</h2>
+      <div class="input-container">
+        <h3>Title</h3>
+        <input type="text" id="special-title" />
+      </div>
+      <div class="input-container">
+        <h3>Type</h3>
+        <input type="text" id="special-type" />
+      </div>
+      <div class="input-container">
+        <h3>Description</h3>
+        <input type="text" id="special-text" />
+      </div>
+      <button type="button" id="add-special-button" style="margin-top: 50px">
         save
       </button>
     </form>
   </body>
   <script>
-    $("#add-update-recipe").click(function () {
+    $("#add-recipe").click(function () {
       $(".page-overlay").show();
-      $(".add-window-container").show();
+      $("#addRecipeId").show();
+    });
+    $("#add-special").click(function () {
+      $(".page-overlay").show();
+      $("#addSpecialId").show();
     });
     $(".page-overlay").click(function () {
       $(".page-overlay").hide();
