@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>API Test Recipes</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-overlay"></div>
+    <h1 class="main-title">recipes</h1>
+
+    <div id="recipesList" class="row-container"></div>
+
+    <div class="details-container">
+      <div class="details-title-container">
+        <img src="img/brussel_chips.jpg" alt="recipe-img" />
+        <div>
+          <h2 id="recipeTitle"></h2>
+          <h3 id="recipeDesc"></h3>
+        </div>
+      </div>
+      <div class="row-1-details">
+        <div>
+          <h2>Post Date</h2>
+          <h3 id="d-postDate"></h3>
+        </div>
+        <div>
+          <h2>Edit Date</h2>
+          <h3 id="d-editDate"></h3>
+        </div>
+      </div>
+      <div class="row-1-details">
+        <div>
+          <h2>Servings</h2>
+          <h3 id="d-servings"></h3>
+        </div>
+        <div>
+          <h2>Prep Time</h2>
+          <h3 id="d-prepTime"></h3>
+        </div>
+        <div>
+          <h2>Cook Time</h2>
+          <h3 id="d-cookTime"></h3>
+        </div>
+      </div>
+      <div class="ingredients-container">
+        <h2>Ingredients</h2>
+      </div>
+      <div class="directions-container">
+        <h2>Directions</h2>
+        <ol></ol>
+      </div>
+    </div>
+
+    <div class="addupdate-container">
+      <button id="add-update-recipe">add/update recipe</button>
+      <button>add/update special</button>
+    </div>
+
+    <form id="addRecipeId" class="add-window-container">
+      <h2>Add a Recipe</h2>
+      <div class="input-container">
+        <h3>Title</h3>
+        <input type="text" id="recipe-title" />
+      </div>
+      <div class="input-container">
+        <h3>Description</h3>
+        <input type="text" id="recipe-description" />
+      </div>
+      <div class="row-1-details b">
+        <div>
+          <h3>Servings</h3>
+          <input type="number" id="recipe-servings" />
+        </div>
+        <div>
+          <h3>Prep Time</h3>
+          <input type="number" id="recipe-preptime" />
+        </div>
+        <div>
+          <h3>Cook Time</h3>
+          <input type="number" id="recipe-cooktime" />
+        </div>
+      </div>
+      <div class="row-1-details">
+        <div>
+          <h3>Post Date</h3>
+          <input type="text" id="recipe-postdate" />
+        </div>
+        <div>
+          <h3>Edit Date</h3>
+          <input type="text" id="recipe-editdate" />
+        </div>
+      </div>
+      <h3 class="ingredient-header">Ingredients</h3>
+      <div id="ingredientInputContainer" class="recipe-ingredient-container">
+        <div class="row-1-details">
+          <div>
+            <h3>Amount</h3>
+            <input type="number" id="recipe-ingredient-amount" />
+          </div>
+          <div>
+            <h3>Measurement</h3>
+            <input type="text" id="recipe-ingredient-measurement" />
+          </div>
+        </div>
+        <div class="input-container">
+          <h3>Ingredient Name</h3>
+          <input type="text" id="recipe-ingredient-name" />
+        </div>
+      </div>
+      <button id="add-ingredient-button">+</button>
+      <h3 class="ingredient-header">Directions</h3>
+      <div class="recipe-ingredient-container">
+        <div class="row-1-details">
+          <div>
+            <h3>Amount</h3>
+            <input type="number" id="recipe-ingredient-amount" />
+          </div>
+          <div>
+            <h3>Measurement</h3>
+            <input type="text" id="recipe-ingredient-measurement" />
+          </div>
+        </div>
+        <div class="input-container">
+          <h3>Ingredient Name</h3>
+          <input type="text" id="recipe-ingredient-name" />
+        </div>
+      </div>
+      <button id="add-direction-button">+</button>
+      <br />
+      <button type="submit" id="add-recipe-button" style="margin-top: 50px">
+        save
+      </button>
+    </form>
+  </body>
+  <script>
+    $("#add-update-recipe").click(function () {
+      $(".page-overlay").show();
+      $(".add-window-container").show();
+    });
+    $(".page-overlay").click(function () {
+      $(".page-overlay").hide();
+      $(".add-window-container").hide();
+      $(".details-container").hide();
+    });
+  </script>
+  <script src="index.js"></script>
+</html>
